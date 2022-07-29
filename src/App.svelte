@@ -1,5 +1,11 @@
 <script lang="ts">
-  import Timer from './lib/Timer.svelte';
+  import Timer from "./lib/Timer.svelte";
+  import { appWindow } from "@tauri-apps/api/window";
+  addEventListener("keydown", async (e) => {
+    if (e.metaKey && e.key == "m") {
+      await appWindow.minimize();
+    }
+  });
 </script>
 
 <main>
