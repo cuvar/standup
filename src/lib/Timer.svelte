@@ -1,6 +1,8 @@
 <script lang="ts">
   let time = 0;
   let timerEnd = false;
+  let timerRunning = false;
+  let timerPaused = false;
   let intervalID;
   import { appWindow } from "@tauri-apps/api/window";
 
@@ -28,15 +30,17 @@
       time = 0;
       return;
     }
+    timerRunning = true;
+    intervalID = setInterval(runTimer, 1000);
+  }
 
-    intervalID = setInterval(async () => {
-      if (time <= 0 || timerEnd) {
-        stopTimer();
-        await showWindow();
-      } else {
-        time--;
-      }
-    }, 1000);
+  async function runTimer() {
+    if (time <= 0 || timerEnd) {
+      stopTimer();
+      await showWindow();
+    } else {
+      time--;
+    }
   }
 
   function stopTimer() {
@@ -44,10 +48,23 @@
     if (intervalID) {
       clearInterval(intervalID);
     }
+    timerRunning = false;
     timerEnd = true;
     setTimeout(() => {
       timerEnd = false;
     }, 2000);
+  }
+
+  function pauseTimer() {
+    timerPaused = true;
+    if (intervalID) {
+      clearInterval(intervalID);
+    }
+  }
+
+  function resumeTimer() {
+    timerPaused = false;
+    intervalID = setInterval(runTimer, 1000);
   }
 
   async function showWindow() {
@@ -83,15 +100,31 @@
   }
 </script>
 
-{#if timerEnd}
-  <h1>Stand up!</h1>
-{:else}
-  <h1>{secondsToTime(time)}</h1>
-{/if}
+<div class="flex flex-col items-center">
+  {#if timerEnd}
+    <h1>Timer ended!</h1>
+  {:else}
+    <h1>{secondsToTime(time)}</h1>
+  {/if}
 
-<div class="flex flex-col w-lg">
   {#if !timerEnd}
-    <input type="time" id="time-input" on:keydown={onKeyDown} />
-    <button on:click={startTimer} class="mt-1">Start</button>
+    <input
+      type="time"
+      id="time-input"
+      on:keydown={onKeyDown}
+      value="00:30:00"
+    />
+    <div class="mt-1">
+      <button on:click={startTimer} class="text-green">Start</button>
+      {#if timerRunning}
+        {#if timerPaused}
+          <button on:click={resumeTimer} class="text-blue">Resume</button>
+        {:else}
+          <button on:click={pauseTimer} class="text-blue">Break</button>
+        {/if}
+      {:else}
+        <button on:click={stopTimer} class="text-red">Stop</button>
+      {/if}
+    </div>
   {/if}
 </div>
