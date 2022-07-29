@@ -2,6 +2,7 @@
   let time = 0;
   let timerEnd = false;
   let intervalID;
+  import { appWindow } from "@tauri-apps/api/window";
 
   function getTime() {
     const timer = document.getElementById("time-input");
@@ -28,9 +29,10 @@
       return;
     }
 
-    intervalID = setInterval(() => {
+    intervalID = setInterval(async () => {
       if (time <= 0 || timerEnd) {
         stopTimer();
+        await showWindow();
       } else {
         time--;
       }
@@ -46,6 +48,11 @@
     setTimeout(() => {
       timerEnd = false;
     }, 2000);
+  }
+
+  async function showWindow() {
+    await appWindow.show();
+    await appWindow.setFocus();
   }
 
   function onKeyDown(e: KeyboardEvent) {
@@ -77,7 +84,7 @@
 </script>
 
 {#if timerEnd}
-  <h1>Timer ended</h1>
+  <h1>Stand up!</h1>
 {:else}
   <h1>{secondsToTime(time)}</h1>
 {/if}
