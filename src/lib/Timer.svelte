@@ -44,15 +44,21 @@
   }
 
   function stopTimer() {
-    time = 0;
+    timerRunning = false;
+    timerEnd = true;
+
     if (intervalID) {
       clearInterval(intervalID);
     }
-    timerRunning = false;
-    timerEnd = true;
-    setTimeout(() => {
+
+    if (time <= 0) {
+      setTimeout(() => {
+        timerEnd = false;
+      }, 2000);
+    } else {
       timerEnd = false;
-    }, 2000);
+    }
+    time = 0;
   }
 
   function pauseTimer() {
@@ -116,15 +122,15 @@
     />
     <div class="mt-1">
       <button on:click={startTimer} class="text-green">Start</button>
-      {#if timerRunning}
-        {#if timerPaused}
-          <button on:click={resumeTimer} class="text-blue">Resume</button>
-        {:else}
-          <button on:click={pauseTimer} class="text-blue">Break</button>
-        {/if}
+      {#if timerPaused}
+        <button on:click={resumeTimer} class="text-blue">Resume</button>
       {:else}
-        <button on:click={stopTimer} class="text-red">Stop</button>
+        <button on:click={pauseTimer} class="text-blue">Break</button>
       {/if}
+      <!-- {#if timerRunning}
+      {:else} -->
+      <button on:click={stopTimer} class="text-red">Stop</button>
+      <!-- {/if} -->
     </div>
   {/if}
 </div>
