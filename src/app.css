@@ -1,3 +1,7 @@
+* {
+  font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
+}
+
 :root {
   font-family: Inter, Avenir, Helvetica, Arial, sans-serif;
   font-size: 16px;
@@ -49,9 +53,9 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid transparent;
-  padding: 0.6em 1.2em;
+  padding: 0.4em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
@@ -60,7 +64,13 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
+  border-color: white;
+}
+
+button:active {
   border-color: #646cff;
+  color: #646cff;
+  /* border-width: 2px; */
 }
 button:focus,
 button:focus-visible {
@@ -78,4 +88,47 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+.flex {
+  display: flex;
+}
+.flex-col {
+  flex-direction: column;
+}
+
+.w-lg {
+  width: 10rem;
+}
+
+.mt-1 {
+  margin-top: 1rem;
+}
+
+.items-center {
+  align-items: center;
+}
+
+input {
+  padding: 5px 10px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+input:focus {
+  border-color: #646cff;
+}
+
+.text-green {
+  color: rgb(1, 167, 1);
+}
+
+.text-red {
+  color: rgb(216, 72, 72);
+}
+
+.text-blue {
+  color: rgb(51, 160, 224);
 }
