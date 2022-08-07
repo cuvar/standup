@@ -31,7 +31,7 @@
       return;
     }
     timerRunning = true;
-    intervalID = setInterval(runTimer, 1000);
+    intervalID = setInterval(runTimer, 950);
   }
 
   async function runTimer() {
